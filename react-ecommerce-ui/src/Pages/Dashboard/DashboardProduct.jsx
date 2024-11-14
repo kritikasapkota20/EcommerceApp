@@ -24,7 +24,7 @@ import { ToastContainer } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import Chip from "@mui/material/Chip";
 import Avatar  from "@mui/material/Avatar";
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 const STATUS_COLOR = {
   pending: "secondary",
@@ -35,8 +35,20 @@ const STATUS_COLOR = {
 // pagination
 
 export default function DashboardProduct() {
+
   const navigate=useNavigate();
   // const queryclient=useQueryClient();
+  const [search,setsearch]=useState("");
+
+  const [debouncedsearch,setdebouncedsearch]=useState(null);
+  useEffect(()=>{
+const id=setTimeout(()=>{
+  setdebouncedsearch(search)
+},1000);
+return ()=>{
+  clearTimeout(id);
+}
+  },[search])
   const mutation=useMutation({
     mutationFn:async(id)=>{
       const windowconfirm=window.confirm("Are u sure u wanna  delete the product?")
@@ -66,7 +78,6 @@ toast.error(err.response.data.message)
   
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(4);
-  const [search,setsearch]=useState("");
 
 
   const handleChangePage = (event, newPage) => {
@@ -81,7 +92,7 @@ toast.error(err.response.data.message)
 
   const {data ,isLoading,refetch}=useQuery({
     queryKey:["product",
-    ,{page,rowsPerPage,search}],
+    ,{page,rowsPerPage,debouncedsearch}],
     queryFn:async()=>{
      try{ const res=await axios.get("/api/products"
         ,{
@@ -89,7 +100,7 @@ toast.error(err.response.data.message)
           
           page,
           limit:rowsPerPage,
-          search
+          search:debouncedsearch
         }
   
       }
