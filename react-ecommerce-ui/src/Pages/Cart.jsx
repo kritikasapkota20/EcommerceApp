@@ -17,13 +17,13 @@ import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 // import { Mutation } from '@tanstack/react-query';
-import { authcontext } from '../App';
 import { useMutation, } from '@tanstack/react-query';
 import {useNavigate, Navigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { Chip,Button } from '@mui/material';
 import { toast } from 'react-toastify';
+import  { cartcontext } from '../context/CartContextProvider';
 
 function generate(element) {
   return [0, 1, 2].map((value) =>
@@ -38,7 +38,7 @@ const Demo = styled('div')(({ theme }) => ({
 }));
 
 export default function Cart() {
- const {cart,setcart}=useContext(authcontext)
+ const {cart,setcart}=useContext(cartcontext)
  const navigate=useNavigate();
  const mutation=useMutation({
    mutationFn:async(data)=>{

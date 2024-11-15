@@ -5,7 +5,9 @@ const Orders=require("../models/Orders");
 const {query,validationResult}=require("express-validator");
 const validator=require("../middleware/validation.middleware")
 const addproduct=async(req,res,next)=>{
-try{
+
+  try{
+
 await Products.create({
     name:req.body.name,
     price:req.body.price,
@@ -18,6 +20,11 @@ await Products.create({
 // console.log(req.file);
 
 
+  if(!req.file){
+    return res.status({
+      message:"Please upload an image"
+    })
+  }
 res.status(200).json({
     message:"Products added successfully"
 })}catch(error){

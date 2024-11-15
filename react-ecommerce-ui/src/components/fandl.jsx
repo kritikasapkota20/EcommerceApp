@@ -18,7 +18,7 @@ const {data,isLoading}=useQuery({
   queryFn:async()=>{
     try{
     const res=await axios.get(`/api/products/${forl}`)
-    console.log(res.data.data);
+    // console.log(res.data.data);
     return res.data.data
   }catch(error){
     console.log(error);

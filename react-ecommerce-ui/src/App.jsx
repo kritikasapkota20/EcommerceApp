@@ -4,6 +4,11 @@ import Stack from '@mui/material/Stack';
 import SignIn from './Pages/Signin';
 import SignUp from './Pages/Signup';
 import Orders from './Pages/orders';
+import {authcontext} from "./context/AuthContextProvider"
+import AuthContextProvider from "./context/AuthContextProvider"
+
+import {cartcontext} from "./context/CartContextProvider"
+import CartContextProvider from "./context/CartContextProvider"
 
 import Homepage from './Pages/Homepage';
 import Product from './Pages/product';
@@ -18,8 +23,6 @@ import DashboardProduct from "./Pages/Dashboard/DashboardProduct"
 import DashboardUser from "./Pages/Dashboard/DashboardUser"
 import Productform from './Pages/Dashboard/Productform';
 
-
-export const authcontext=createContext();
 const queryclient=new QueryClient();
 export const ProtectedRoutes=()=>{
   const {authUser}=useContext(authcontext);
@@ -27,25 +30,12 @@ export const ProtectedRoutes=()=>{
   return <Navigate to="/sign-in"/>
 }
 const App = () => {
-  const [cart, setcart] = useState(() => {
-    // const authUser = JSON.parse(localStorage.getItem("authUser"));
-    // if (authUser) {
-    //   return JSON.parse(localStorage.getItem(`cart_${authUser.email}`)) ?? [];
-    // }
-   const storedcart= localStorage.getItem("cart")
-
-    return storedcart? JSON.parse(storedcart):[];
-
-  });
-  useEffect(()=>{
-localStorage.setItem("cart",JSON.stringify(cart));
-  },[cart])
-  const [authUser,setAuthUser]=useState(()=>{
-    return JSON.parse(localStorage.getItem("authUser"));
-  })
+  
+  
   return (
     <div>
-      <authcontext.Provider value={{authUser,setAuthUser,cart,setcart}}>
+     <AuthContextProvider>
+<CartContextProvider>
         <QueryClientProvider client={queryclient}>
     <BrowserRouter>
     <Routes>
@@ -77,8 +67,8 @@ localStorage.setItem("cart",JSON.stringify(cart));
     </Routes>
     </BrowserRouter>
     </QueryClientProvider>
-    </authcontext.Provider>
-      
+    </CartContextProvider>
+    </AuthContextProvider>
     </div>
   )
 }

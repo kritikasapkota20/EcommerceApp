@@ -12,8 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import {useNavigate} from "react-router-dom"
-import {authcontext} from "../App"
+import {useNavigate} from "react-router-dom";
+import { authcontext } from '../context/AuthContextProvider';
 import { useState,useEffect,useContext } from "react";
 import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
@@ -22,8 +22,10 @@ const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard'];
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Badge from '@mui/material/Badge';
+import { cartcontext } from '../context/CartContextProvider';
 function Navbar() {
-const {authUser,setAuthUser,cart}=useContext(authcontext)
+const {authUser,setAuthUser}=useContext(authcontext)
+const {cart}=useContext(cartcontext)
 const navigate=useNavigate()
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -174,8 +176,6 @@ localStorage.removeItem("authUser",JSON.stringify(data.user));
            )}
           </Box>
           <Box sx={{ display:"flex",alignItems:"center"  }}>
-            
-         
             {authUser?
             <>     
              <Badge  badgeContent={cart.length} color="warning"sx ={{mr:10,cursor:"pointer"}} onClick={()=>{

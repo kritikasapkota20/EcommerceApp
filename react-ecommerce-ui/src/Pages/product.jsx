@@ -89,7 +89,7 @@ return [];
         <Input sx={{width:"170px"}}  onChange={(e)=>{
           setsearch(e.target.value)
         }}
-        placeholder="Search users"
+        placeholder="Search Products"
           id="input-with-icon-adornment"
           value={search}
           startAdornment={

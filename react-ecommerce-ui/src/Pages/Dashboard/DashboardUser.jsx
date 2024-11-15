@@ -18,6 +18,7 @@ import {Button} from "@mui/material";
 import { useQuery,useMutation } from "@tanstack/react-query";
 import Chip from "@mui/material/Chip";
 import Avatar  from "@mui/material/Avatar";
+import useDebounce from "../../hooks/useDebounce";
 import React, { useState } from "react"
 import { ToastContainer,toast } from "react-toastify";
 const STATUS_COLOR = {
@@ -32,7 +33,7 @@ export default function DashboardUser() {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(4);
   const [search,setsearch]=useState("");
-
+const debouncedsearch=useDebounce(search,1000)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage+1);
@@ -72,7 +73,7 @@ toast.error(err.response.data.message)
 
   const {data ,isLoading,refetch}=useQuery({
     queryKey:["users"
-    ,{page,rowsPerPage,search}],
+    ,{page,rowsPerPage,debouncedsearch}],
     queryFn:async()=>{
      try{ const res=await axios.get("/api/user"
         ,{
@@ -80,7 +81,7 @@ toast.error(err.response.data.message)
           
           page,
           limit:rowsPerPage,
-          search
+          search:debouncedsearch
         }
   
       }

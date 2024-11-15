@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import { Navigate, useParams } from "react-router-dom";
 import { useMutation,useQueryClient } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
-
+import useDebounce from "../../hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import Chip from "@mui/material/Chip";
 import Avatar  from "@mui/material/Avatar";
@@ -39,16 +39,9 @@ export default function DashboardProduct() {
   const navigate=useNavigate();
   // const queryclient=useQueryClient();
   const [search,setsearch]=useState("");
+  const debouncedsearch=useDebounce(search,1000)
 
-  const [debouncedsearch,setdebouncedsearch]=useState(null);
-  useEffect(()=>{
-const id=setTimeout(()=>{
-  setdebouncedsearch(search)
-},1000);
-return ()=>{
-  clearTimeout(id);
-}
-  },[search])
+  
   const mutation=useMutation({
     mutationFn:async(id)=>{
       const windowconfirm=window.confirm("Are u sure u wanna  delete the product?")
@@ -203,6 +196,7 @@ toast.error(err.response.data.message)
                 <TableCell>
                   <Avatar src={`http://localhost:4001/${image}`} alt={name}/>
                   </TableCell>
+                  
                 <TableCell>{name}</TableCell>
                 <TableCell>Rs {price}</TableCell>
                 <TableCell >

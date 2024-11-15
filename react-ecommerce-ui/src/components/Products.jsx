@@ -5,12 +5,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {authcontext} from "../App"
+import {authcontext} from "../context/AuthContextProvider"
+import { cartcontext } from '../context/CartContextProvider';
 import { useState,useEffect,useContext } from "react";
 
 export default function Products({product}) {
 
-const {authUser,setAuthUser,cart,setcart}=useContext(authcontext)
+const {authUser,setAuthUser}=useContext(authcontext)
+const {cart,setcart}=useContext(cartcontext)
 
   return (
     <Card sx={{ maxWidth: 345,width:"300px" }}>
@@ -23,7 +25,7 @@ const {authUser,setAuthUser,cart,setcart}=useContext(authcontext)
         // image={`/api/${product?.image}`}
 
 
-        title="green iguana"
+        
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -37,7 +39,7 @@ const {authUser,setAuthUser,cart,setcart}=useContext(authcontext)
         <Button size="small" onClick={()=>{
           const productExist=cart.find(({_id})=>_id===product._id
         )
-         console.log(productExist)
+        //  console.log(productExist)
 const  newcartitems=[...cart];
 if(productExist){
   productExist.quantity+=1;
